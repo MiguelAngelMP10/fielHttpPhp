@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Laravel\Lumen\Http\ResponseFactory;
+use PhpCfdi\Credentials\Credential;
 use PhpCfdi\SatWsDescargaMasiva\RequestBuilder\FielRequestBuilder\Fiel;
 use PhpCfdi\SatWsDescargaMasiva\RequestBuilder\FielRequestBuilder\FielRequestBuilder;
 use PhpCfdi\SatWsDescargaMasiva\RequestBuilder\RequestBuilderException;
@@ -35,6 +36,22 @@ class FielXmlController extends Controller
         }
 
         $this->requestBuilder = new FielRequestBuilder($this->fiel);
+    }
+
+    public function info(): Response|ResponseFactory
+    {
+        $fiel = Credential::openFiles(
+            env('CER_PATH'),
+            env('KEY_PATH'),
+            env('PASSWORD_FIEL')
+        );
+        $certificado = $fiel->certificate();
+
+
+        return response([
+            'rfc' => $fiel->rfc(),
+            'legalName' => $certificado->legalName()
+        ]);
     }
 
     /**

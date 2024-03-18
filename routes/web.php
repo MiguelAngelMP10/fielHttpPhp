@@ -18,8 +18,8 @@ use Laravel\Lumen\Routing\Router;
 $router->get('/', function () {
     return 'Api Fiel';
 });
-
+$router->get('/info', ['middleware' => 'auth', 'uses' => 'FielXmlController@info']);
 $router->get('/authorization', ['middleware' => 'auth', 'uses' => 'FielXmlController@authorization']);
-$router->post('/query', 'FielXmlController@query');
-$router->get('/verify/{requestId}', 'FielXmlController@verify');
-$router->get('/download/{packageId}', 'FielXmlController@download');
+$router->post('/query',  ['middleware' => 'auth', 'uses' => 'FielXmlController@query']);
+$router->get('/verify/{requestId}', ['middleware' => 'auth', 'uses' =>  'FielXmlController@verify']);
+$router->get('/download/{packageId}', ['middleware' => 'auth', 'uses' =>  'FielXmlController@download']);
