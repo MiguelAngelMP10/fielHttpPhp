@@ -113,4 +113,63 @@ Descarga un paquete aprobado.
 Para ejecutar las pruebas, ejecuta el siguiente comando:
 
 ```bash
-vendor/bin/phpunit --testdox
+  vendor/bin/phpunit --testdox
+```
+
+## Ejemplo de usar los servios del api fiel
+
+```php
+<?php
+
+namespace App\phpcfdi\SatWsDescargaMasiva\RequestBuilder\FielHttpRequestBuilder;
+
+use Illuminate\Support\Facades\Http;
+use PhpCfdi\SatWsDescargaMasiva\RequestBuilder\RequestBuilderInterface;
+use PhpCfdi\SatWsDescargaMasiva\Services\Query\QueryParameters;
+use PhpCfdi\SatWsDescargaMasiva\Shared\DateTime;
+
+final class FielHttpRequestBuilder implements RequestBuilderInterface
+{
+    private string $baseUrl;
+
+    private string $token;
+
+    public function __construct(string $baseUrl, string $token)
+    {
+        $this->baseUrl = $baseUrl;
+        $this->token = $token;
+    }
+
+    public function authorization(DateTime $created, DateTime $expires, string $securityTokenId = ''): string
+    {
+        return Http::withToken($this->token)->get($this->baseUrl.'authorization')->body();
+    }
+
+    public function query(QueryParameters $queryParameters): string
+    {
+        return Http::withToken($this->token)->post($this->baseUrl.'query', $queryParameters->jsonSerialize())->body();
+    }
+
+    public function verify(string $requestId): string
+    {
+        return Http::withToken($this->token)->get($this->baseUrl.'verify/'.$requestId)->body();
+    }
+
+    public function download(string $packageId): string
+    {
+        return Http::withToken($this->token)->get($this->baseUrl.'download/'.$packageId)->body();
+    }
+}
+
+```
+* Forma de uso en conjuto de la libreria de **phpcfdi/sat-ws-descarga-masiva** se crea el **$requestBuilder** usando **FielHttpRequestBuilder**
+
+
+```php
+
+$requestBuilder = new \App\phpcfdi\SatWsDescargaMasiva\RequestBuilder\FielHttpRequestBuilder\FielHttpRequestBuilder($baseUrl, $authorization);
+
+$service = new \PhpCfdi\SatWsDescargaMasiva\Service($requestBuilder, $webClient);
+
+```
+https://github.com/phpcfdi/sat-ws-descarga-masiva?tab=readme-ov-file#creaci%C3%B3n-el-servicio
