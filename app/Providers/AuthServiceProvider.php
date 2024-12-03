@@ -33,10 +33,10 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('api', function (Request $request) {
-
             if ($request->header('authorization') === 'Bearer ' . env('API_TOKEN')) {
                 return new GenericUser(['id' => 1, 'name' => 'User Fiel']);
             }
+            return false;
         });
     }
 }

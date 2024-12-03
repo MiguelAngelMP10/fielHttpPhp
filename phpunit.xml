@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         colors="true"
->
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="bootstrap/app.php"
+         colors="true">
     <testsuites>
         <testsuite name="Application Test Suite">
             <directory suffix="Test.php">./tests</directory>
@@ -11,7 +9,9 @@
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="API_TOKEN" value="CD5E2361F29A6815BAEE4A73EA51B"/>
+        <env name="CER_PATH" value="./tests/_files/EKU9003173C9.cer"/>
+        <env name="KEY_PATH" value="./tests/_files/EKU9003173C9.key"/>
+        <env name="PASSWORD_FIEL" value="12345678a"/>
     </php>
 </phpunit>
