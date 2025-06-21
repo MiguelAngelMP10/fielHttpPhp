@@ -49,8 +49,11 @@ class FielXmlController extends Controller
 
 
         return response([
-            'rfc' => $fiel->rfc(),
-            'legalName' => $certificado->legalName()
+            'rfc' => $certificado->rfc(),
+            'legalName' => $certificado->legalName(),
+            'serialNumberBytes' => $certificado->serialNumber()->bytes(),
+            'validTo' => $certificado->validTo(),
+            'validFrom' =>  $certificado->validFrom(),
         ]);
     }
 
