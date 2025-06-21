@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Http\ResponseFactory;
 use PhpCfdi\Credentials\Credential;
 use PhpCfdi\SatWsDescargaMasiva\RequestBuilder\FielRequestBuilder\Fiel;
@@ -53,7 +54,7 @@ class FielXmlController extends Controller
             'legalName' => $certificado->legalName(),
             'serialNumberBytes' => $certificado->serialNumber()->bytes(),
             'validTo' => $certificado->validTo(),
-            'validFrom' =>  $certificado->validFrom(),
+            'validFrom' => $certificado->validFrom(),
         ]);
     }
 
@@ -107,6 +108,28 @@ class FielXmlController extends Controller
     {
         return response($this->requestBuilder->download($packageId), 200, [
             'Content-Type' => 'application/xml'
+        ]);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function sign(Request $request): Response|ResponseFactory
+    {
+        $this->validate($request, [
+            'tokenUuid' => [
+                'required',
+                'regex:/^[^|]+\|[^|]+\|[^|]+$/'
+            ],
+        ]);
+
+        $tokenSing = base64_encode(
+            base64_encode($this->fiel->sign($request->input('tokenUuid'), OPENSSL_ALGO_SHA1))
+        );
+
+        return response([
+            'tokenUuid' => $request->input('tokenUuid'),
+            'tokenUuidSing' => $tokenSing,
         ]);
     }
 }
