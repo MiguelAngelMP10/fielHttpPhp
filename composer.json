@@ -1,7 +1,11 @@
 {
     "name": "laravel/lumen",
     "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "lumen"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -9,7 +13,8 @@
         "guzzlehttp/guzzle": "^7.8",
         "laravel/lumen-framework": "^11.0",
         "phpcfdi/credentials": "^1.2",
-        "phpcfdi/sat-ws-descarga-masiva": "^v1.0.0"
+        "phpcfdi/sat-ws-descarga-masiva": "^v1.0.0",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
